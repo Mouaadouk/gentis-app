@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import Home from "./Views/Home";
 import PokemonTypesList from "./Views/PokemonWithSameType";
 import Header from "./Components/Header";
@@ -65,31 +65,37 @@ function App() {
           {loading ? (
             <CircularProgress />
           ) : (
-            <Route exact path="/">
-              <Home
-                pokemonList={filtredData}
-                handlePrevious={handlePrevious}
-                handleNext={handleNext}
-                searchedElem={searchedElem}
-                setSearchedElem={setSearchedElem}
-                setPokemonWithSameTypesList={setPokemonWithSameTypesList}
-                pokemonWithSameTypesList={pokemonWithSameTypesList}
-                setLoadingTypes={setLoadingTypes}
-              />
-            </Route>
+            <>
+              <Route exact path="/">
+                <Home
+                  pokemonList={filtredData}
+                  handlePrevious={handlePrevious}
+                  handleNext={handleNext}
+                  searchedElem={searchedElem}
+                  setSearchedElem={setSearchedElem}
+                  setPokemonWithSameTypesList={setPokemonWithSameTypesList}
+                  pokemonWithSameTypesList={pokemonWithSameTypesList}
+                  setLoadingTypes={setLoadingTypes}
+                />
+              </Route>
+              <Redirect to="/" />
+            </>
           )}
 
           {loadingTypes ? (
             <CircularProgress />
           ) : (
-            <Route path="/pokemonTypeList">
-              {(props) => (
-                <PokemonTypesList
-                  pokemonList={pokemonWithSameTypesList}
-                  {...props}
-                />
-              )}
-            </Route>
+            <>
+              <Route path="/pokemonTypeList">
+                {(props) => (
+                  <PokemonTypesList
+                    pokemonList={pokemonWithSameTypesList}
+                    {...props}
+                  />
+                )}
+              </Route>
+              <Redirect to="/" />
+            </>
           )}
         </Switch>
 
