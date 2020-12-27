@@ -17,13 +17,14 @@ import {
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { useHistory } from "react-router-dom";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 345,
   },
   media: {
     height: 0,
-    paddingTop: "56.25%", // 16:9
+    paddingTop: "56.25%",
   },
   expand: {
     transform: "rotate(0deg)",
@@ -46,6 +47,7 @@ function PokemonDetails({
   handlePokemonTypes,
   open,
   setOpen,
+  pokeEvolution,
 }) {
   const [expanded, setExpanded] = React.useState(false);
 
@@ -55,6 +57,7 @@ function PokemonDetails({
 
   const history = useHistory();
   const classes = useStyles();
+  console.log(pokeEvolution);
   return (
     <Dialog open={open} onClose={() => setOpen(false)} taile="md">
       {loading ? (
@@ -90,6 +93,11 @@ function PokemonDetails({
               } type : ${pokeData.types.map((item) => item.type.name)},
               `}
             </Typography>
+            <Typography>{`Pokemon evolution(${
+              pokeEvolution.length
+            }) :${pokeEvolution.map(
+              (item) => item["species"]["name"]
+            )} `}</Typography>
           </CardContent>
           <CardActions disableSpacing>
             <IconButton

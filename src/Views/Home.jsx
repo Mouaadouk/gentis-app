@@ -3,6 +3,7 @@ import {
   Card,
   CardContent,
   CardMedia,
+  CardActions,
   Grid,
   Typography,
   Container,
@@ -10,6 +11,7 @@ import {
   Tooltip,
   TextField,
   InputLabel,
+  Button,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import img1 from "../images/poke.jpg";
@@ -28,6 +30,10 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     display: "flex",
     flexDirection: "column",
+    "&:hover": {
+      opacity: " 0.8",
+      width: "105%",
+    },
   },
   cardMedia: {
     paddingTop: "56.25%",
@@ -58,13 +64,22 @@ export default function Home({
 }) {
   const [open, setOpen] = useState(false);
   const [pokeData, setPokeDate] = useState({});
+  const [pokeEvolution, setPokeEvolution] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingEvolution, setLoadingEvolution] = useState(true);
 
   const fetchPokeData = async (url) => {
     setLoading(true);
-    await axios.get(url).then(({ data }) => {
+    await axios.get(url).then(async ({ data }) => {
       setPokeDate(data);
       setLoading(false);
+      setLoadingEvolution(true);
+      await axios
+        .get(`https://pokeapi.co/api/v2/evolution-chain/${data.id}`)
+        .then(({ data }) => {
+          setPokeEvolution(data["chain"]["evolves_to"]);
+          setLoadingEvolution(false);
+        });
     });
   };
 
@@ -72,7 +87,6 @@ export default function Home({
     setOpen(true);
     fetchPokeData(url);
   };
-
   const handlePokemonTypes = async (url, type) => {
     setLoadingTypes(true);
     await axios.get(url).then(({ data }) => {
@@ -118,16 +132,23 @@ export default function Home({
               <Grid container spacing={2}>
                 {pokemonList.map((item, index) => (
                   <Grid item key={index} xs={12} sm={6} md={3}>
-                    <IconButton onClick={() => handleClick(item["url"])}>
-                      <Card className={classes.card}>
-                        <CardMedia className={classes.cardMedia} image={img1} />
-                        <CardContent>
-                          <Typography gutterBottom variant="h5" component="h2">
-                            {item.name}
-                          </Typography>
-                        </CardContent>
-                      </Card>
-                    </IconButton>
+                    <Card className={classes.card}>
+                      <CardMedia className={classes.cardMedia} image={img1} />
+                      <CardContent className={classes.cardContent}>
+                        <Typography gutterBottom variant="h5" component="h2">
+                          {item.name}
+                        </Typography>
+                      </CardContent>
+                      <CardActions>
+                        <Button
+                          size="small"
+                          color="primary"
+                          onClick={() => handleClick(item["url"])}
+                        >
+                          Détails
+                        </Button>
+                      </CardActions>
+                    </Card>
                   </Grid>
                 ))}
               </Grid>
@@ -137,6 +158,7 @@ export default function Home({
                 setOpen={setOpen}
                 loading={loading}
                 handlePokemonTypes={handlePokemonTypes}
+                pokeEvolution={pokeEvolution}
               />
             </>
           ) : (
