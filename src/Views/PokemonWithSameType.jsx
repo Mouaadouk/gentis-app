@@ -75,7 +75,6 @@ export default function Home({ history, pokemonList }) {
     setPage(value);
   };
   const count = Math.ceil(filtredData.length / itemPerPage);
-  console.log(currentBloc);
   const classes = useStyles();
   return (
     <>

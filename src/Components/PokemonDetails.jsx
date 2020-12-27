@@ -48,6 +48,7 @@ function PokemonDetails({
   open,
   setOpen,
   pokeEvolution,
+  loadingEvolution,
 }) {
   const [expanded, setExpanded] = React.useState(false);
 
@@ -92,11 +93,15 @@ function PokemonDetails({
               } type : ${pokeData.types.map((item) => item.type.name)},
               `}
             </Typography>
-            <Typography>{`Pokemon evolution(${
-              pokeEvolution.length
-            }) :${pokeEvolution.map(
-              (item) => item["species"]["name"]
-            )} `}</Typography>
+            {loadingEvolution ? (
+              <CircularProgress />
+            ) : (
+              <Typography>{`Pokemon evolution(${
+                pokeEvolution.length
+              }) :${pokeEvolution.map(
+                (item) => item["species"]["name"]
+              )} `}</Typography>
+            )}
           </CardContent>
           <CardActions disableSpacing>
             <IconButton

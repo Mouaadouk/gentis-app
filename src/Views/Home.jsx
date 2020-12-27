@@ -19,6 +19,7 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import WarningIcon from "@material-ui/icons/Warning";
 import PokemonDetails from "../Components/PokemonDetails";
+import ButtonBase from "@material-ui/core/ButtonBase";
 import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
@@ -49,6 +50,10 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     fontSize: "30px",
     paddingTop: "15px",
+  },
+  ButtonBase: {
+    display: "block",
+    textAlign: "initial",
   },
 }));
 
@@ -133,21 +138,28 @@ export default function Home({
                 {pokemonList.map((item, index) => (
                   <Grid item key={index} xs={12} sm={6} md={3}>
                     <Card className={classes.card}>
-                      <CardMedia className={classes.cardMedia} image={img1} />
-                      <CardContent className={classes.cardContent}>
-                        <Typography gutterBottom variant="h5" component="h2">
-                          {item.name}
-                        </Typography>
-                      </CardContent>
-                      <CardActions>
-                        <Button
-                          size="small"
-                          color="primary"
-                          onClick={() => handleClick(item["url"])}
-                        >
-                          Détails
-                        </Button>
-                      </CardActions>
+                      <ButtonBase
+                        className={classes.ButtonBase}
+                        onClick={() => {
+                          handleClick(item["url"]);
+                        }}
+                      >
+                        <CardMedia className={classes.cardMedia} image={img1} />
+                        <CardContent className={classes.cardContent}>
+                          <Typography gutterBottom variant="h5" component="h2">
+                            {item.name}
+                          </Typography>
+                        </CardContent>
+                        <CardActions>
+                          <Button
+                            size="small"
+                            color="primary"
+                            onClick={() => handleClick(item["url"])}
+                          >
+                            Détails
+                          </Button>
+                        </CardActions>
+                      </ButtonBase>
                     </Card>
                   </Grid>
                 ))}
@@ -159,6 +171,7 @@ export default function Home({
                 loading={loading}
                 handlePokemonTypes={handlePokemonTypes}
                 pokeEvolution={pokeEvolution}
+                loadingEvolution={loadingEvolution}
               />
             </>
           ) : (
