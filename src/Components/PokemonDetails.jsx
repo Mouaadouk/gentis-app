@@ -57,7 +57,6 @@ function PokemonDetails({
 
   const history = useHistory();
   const classes = useStyles();
-  console.log(pokeEvolution);
   return (
     <Dialog open={open} onClose={() => setOpen(false)} taile="md">
       {loading ? (

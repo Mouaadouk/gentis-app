@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     "&:hover": {
-      opacity: " 0.8",
+      opacity: " 0.7",
       width: "105%",
     },
   },
