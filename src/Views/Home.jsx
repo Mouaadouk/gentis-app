@@ -141,6 +141,7 @@ export default function Home({
                       <ButtonBase
                         className={classes.ButtonBase}
                         onClick={() => {
+                          console.log("click");
                           handleClick(item["url"]);
                         }}
                       >
