@@ -148,4 +148,4 @@ function PokemonDetails({
   );
 }
 
-export default PokemonDetails;
+export default React.memo(PokemonDetails);

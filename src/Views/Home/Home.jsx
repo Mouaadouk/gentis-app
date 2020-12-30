@@ -1,18 +1,10 @@
 import React, { useState } from "react";
-import {
-  Grid,
-  Container,
-  IconButton,
-  Tooltip,
-  TextField,
-  InputLabel,
-} from "@material-ui/core";
+import { Grid, Container, TextField, InputLabel } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import WarningIcon from "@material-ui/icons/Warning";
 import PokemonDetails from "../../Components/PokemonDetails";
 import PokemonCard from "../../Components/PokemonCard";
+import Pagination from "../../Components/Pagination";
 import axios from "axios";
 const useStyles = makeStyles((theme) => ({
   cardGrid: {
@@ -30,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Home({
+function Home({
   pokemonList,
   handlePrevious,
   handleNext,
@@ -82,16 +74,10 @@ export default function Home({
           {pokemonList.length > 0 ? (
             <>
               <div className={classes.pagination}>
-                <IconButton onClick={handlePrevious}>
-                  <Tooltip title="go left">
-                    <ChevronLeftIcon />
-                  </Tooltip>
-                </IconButton>
-                <IconButton onClick={handleNext}>
-                  <Tooltip title="go right">
-                    <ChevronRightIcon />
-                  </Tooltip>
-                </IconButton>
+                <Pagination
+                  handlePrevious={handlePrevious}
+                  handleNext={handleNext}
+                />
               </div>
               <Grid container spacing={2}>
                 {pokemonList.map((item, index) => (
@@ -124,3 +110,4 @@ export default function Home({
     </>
   );
 }
+export default React.memo(Home);

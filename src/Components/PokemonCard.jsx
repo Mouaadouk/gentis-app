@@ -67,4 +67,4 @@ const PokemonCard = ({ handleClick, name, home }) => {
   );
 };
 
-export default PokemonCard;
+export default React.memo(PokemonCard);
