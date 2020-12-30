@@ -1,46 +1,23 @@
 import React, { useState } from "react";
 import {
-  Card,
-  CardContent,
-  CardMedia,
-  CardActions,
   Grid,
-  Typography,
   Container,
   IconButton,
   Tooltip,
   TextField,
   InputLabel,
-  Button,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import img1 from "../images/poke.jpg";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import WarningIcon from "@material-ui/icons/Warning";
-import PokemonDetails from "../Components/PokemonDetails";
-import ButtonBase from "@material-ui/core/ButtonBase";
+import PokemonDetails from "../../Components/PokemonDetails";
+import PokemonCard from "../../Components/PokemonCard";
 import axios from "axios";
-
 const useStyles = makeStyles((theme) => ({
   cardGrid: {
     paddingTop: theme.spacing(5),
     paddingBottom: theme.spacing(5),
-  },
-  card: {
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
-    "&:hover": {
-      opacity: " 0.7",
-      width: "105%",
-    },
-  },
-  cardMedia: {
-    paddingTop: "56.25%",
-  },
-  cardContent: {
-    flexGrow: 1,
   },
   pagination: {
     margin: "0 76px 0 0",
@@ -51,10 +28,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "30px",
     paddingTop: "15px",
   },
-  ButtonBase: {
-    display: "block",
-    textAlign: "initial",
-  },
 }));
 
 export default function Home({
@@ -63,9 +36,6 @@ export default function Home({
   handleNext,
   searchedElem,
   setSearchedElem,
-  pokemonWithSameTypesList,
-  setPokemonWithSameTypesList,
-  setLoadingTypes,
 }) {
   const [open, setOpen] = useState(false);
   const [pokeData, setPokeDate] = useState({});
@@ -91,17 +61,6 @@ export default function Home({
   const handleClick = (url) => {
     setOpen(true);
     fetchPokeData(url);
-  };
-  const handlePokemonTypes = async (url, type) => {
-    setLoadingTypes(true);
-    await axios.get(url).then(({ data }) => {
-      setPokemonWithSameTypesList({
-        ...pokemonWithSameTypesList,
-        type: type,
-        data: data["pokemon"],
-      });
-      setLoadingTypes(false);
-    });
   };
 
   const classes = useStyles();
@@ -137,31 +96,11 @@ export default function Home({
               <Grid container spacing={2}>
                 {pokemonList.map((item, index) => (
                   <Grid item key={index} xs={12} sm={6} md={3}>
-                    <Card className={classes.card}>
-                      <ButtonBase
-                        className={classes.ButtonBase}
-                        onClick={() => {
-                          console.log("click");
-                          handleClick(item["url"]);
-                        }}
-                      >
-                        <CardMedia className={classes.cardMedia} image={img1} />
-                        <CardContent className={classes.cardContent}>
-                          <Typography gutterBottom variant="h5" component="h2">
-                            {item.name}
-                          </Typography>
-                        </CardContent>
-                        <CardActions>
-                          <Button
-                            size="small"
-                            color="primary"
-                            onClick={() => handleClick(item["url"])}
-                          >
-                            Détails
-                          </Button>
-                        </CardActions>
-                      </ButtonBase>
-                    </Card>
+                    <PokemonCard
+                      handleClick={() => handleClick(item.url)}
+                      name={item.name}
+                      home
+                    />
                   </Grid>
                 ))}
               </Grid>
@@ -170,7 +109,6 @@ export default function Home({
                 open={open}
                 setOpen={setOpen}
                 loading={loading}
-                handlePokemonTypes={handlePokemonTypes}
                 pokeEvolution={pokeEvolution}
                 loadingEvolution={loadingEvolution}
               />

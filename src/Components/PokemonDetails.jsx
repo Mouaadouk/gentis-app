@@ -14,9 +14,12 @@ import {
   Dialog,
   Button,
   CircularProgress,
+  Chip,
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { useHistory } from "react-router-dom";
+import { getPokemonsTypes } from "../redux/actions/pokemonType.action";
+import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,7 +47,6 @@ const useStyles = makeStyles((theme) => ({
 function PokemonDetails({
   pokeData,
   loading,
-  handlePokemonTypes,
   open,
   setOpen,
   pokeEvolution,
@@ -55,7 +57,7 @@ function PokemonDetails({
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-
+  const dispatch = useDispatch();
   const history = useHistory();
   const classes = useStyles();
   return (
@@ -96,11 +98,12 @@ function PokemonDetails({
             {loadingEvolution ? (
               <CircularProgress />
             ) : (
-              <Typography>{`Pokemon evolution(${
-                pokeEvolution.length
-              }) :${pokeEvolution.map(
-                (item) => item["species"]["name"]
-              )} `}</Typography>
+              <Typography>
+                {`Pokemon evolution(${pokeEvolution.length})`}
+                {pokeEvolution.map((item) => (
+                  <Chip color="secondary" label={item["species"]["name"]} />
+                ))}
+              </Typography>
             )}
           </CardContent>
           <CardActions disableSpacing>
@@ -125,9 +128,11 @@ function PokemonDetails({
                   variant="outlined"
                   color="secondary"
                   onClick={() => {
-                    handlePokemonTypes(
-                      `https://pokeapi.co/api/v2/type/${item.type.name}`,
-                      item.type.name
+                    dispatch(
+                      getPokemonsTypes(
+                        `https://pokeapi.co/api/v2/type/${item.type.name}`,
+                        item.type.name
+                      )
                     );
                     history.push("/pokemonTypeList");
                   }}
